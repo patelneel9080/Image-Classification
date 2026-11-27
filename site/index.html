@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" data-api-base="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <meta name="author" content="Neel Patel">
+  <meta name="description" content="An evidence-led walkthrough of a CIFAR-10 image-classification study: dataset, CNN experiments, evaluation, and an optional live demo.">
+  <title>CIFAR-10 Vision Lab — Image Classification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="CIFAR-10 Vision Lab home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span>VISION<span class="brand-light">LAB</span><small>IMAGE CLASSIFICATION / 01</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+    <nav id="primary-nav" aria-label="Main navigation">
+      <a href="#dataset">Dataset</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#demo">Try the model <span class="nav-arrow" aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-wrap" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span> A COMPUTER VISION STUDY <span class="eyebrow-divider">/</span> CIFAR-10</p>
+        <h1>Teaching a small model<br>to <span class="accent-text">see the world.</span></h1>
+        <p class="hero-intro">Ten everyday object classes. Tiny 32 × 32 images. A set of experiments exploring how convolution, augmentation, and transfer learning change the way a model learns.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#results">Explore the results <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="#method">Inside the methodology <span aria-hidden="true">↘</span></a>
+        </div>
+        <div class="hero-meta"><span>PROJECT BY <a href="https://github.com/patelneel9080" target="_blank" rel="noopener noreferrer">NEEL PATEL ↗</a></span><span>TensorFlow · Keras</span><span>6 model variants</span><span>10 object classes</span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of the image classification pipeline">
+        <div class="art-label art-label-top"><span class="pulse"></span> INPUT / 32 × 32 RGB</div>
+        <div class="pixel-frame">
+          <div class="pixel-image" aria-hidden="true">
+            <i class="px p1"></i><i class="px p2"></i><i class="px p3"></i><i class="px p4"></i><i class="px p5"></i><i class="px p6"></i><i class="px p7"></i><i class="px p8"></i><i class="px p9"></i><i class="px p10"></i><i class="px p11"></i><i class="px p12"></i><i class="px p13"></i><i class="px p14"></i><i class="px p15"></i><i class="px p16"></i><i class="px p17"></i><i class="px p18"></i><i class="px p19"></i><i class="px p20"></i><i class="px p21"></i><i class="px p22"></i><i class="px p23"></i><i class="px p24"></i><i class="px p25"></i><i class="px p26"></i><i class="px p27"></i><i class="px p28"></i><i class="px p29"></i><i class="px p30"></i><i class="px p31"></i><i class="px p32"></i><i class="px p33"></i><i class="px p34"></i><i class="px p35"></i><i class="px p36"></i><i class="px p37"></i><i class="px p38"></i><i class="px p39"></i><i class="px p40"></i><i class="px p41"></i><i class="px p42"></i><i class="px p43"></i><i class="px p44"></i><i class="px p45"></i><i class="px p46"></i><i class="px p47"></i><i class="px p48"></i><i class="px p49"></i><i class="px p50"></i><i class="px p51"></i><i class="px p52"></i><i class="px p53"></i><i class="px p54"></i><i class="px p55"></i><i class="px p56"></i><i class="px p57"></i><i class="px p58"></i><i class="px p59"></i><i class="px p60"></i><i class="px p61"></i><i class="px p62"></i><i class="px p63"></i><i class="px p64"></i><i class="px p65"></i><i class="px p66"></i><i class="px p67"></i><i class="px p68"></i><i class="px p69"></i><i class="px p70"></i><i class="px p71"></i><i class="px p72"></i><i class="px p73"></i><i class="px p74"></i><i class="px p75"></i><i class="px p76"></i><i class="px p77"></i><i class="px p78"></i><i class="px p79"></i><i class="px p80"></i><i class="px p81"></i><i class="px p82"></i><i class="px p83"></i><i class="px p84"></i><i class="px p85"></i><i class="px p86"></i><i class="px p87"></i><i class="px p88"></i><i class="px p89"></i><i class="px p90"></i><i class="px p91"></i><i class="px p92"></i><i class="px p93"></i><i class="px p94"></i><i class="px p95"></i><i class="px p96"></i>
+          </div>
+        </div>
+        <div class="art-connector" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="art-result"><span class="result-icon" aria-hidden="true">↗</span><div><span class="art-label">MODEL OUTPUT</span><strong>10 <span>classes</span></strong></div><div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="art-label art-label-bottom">FROM PIXELS <span>→</span> TO PREDICTION</div>
+        <span class="art-orbit orbit-one" aria-hidden="true"></span><span class="art-orbit orbit-two" aria-hidden="true"></span>
+      </div>
+      <div class="hero-side-note">MODEL<br>STUDY<br><span>CIFAR-10</span></div>
+    </section>
+
+    <section class="signal-strip" aria-label="Project at a glance">
+      <div class="signal-inner">
+        <div><span class="signal-value">50k</span><span class="signal-label">TRAINING IMAGES</span></div>
+        <div><span class="signal-value">10</span><span class="signal-label">OBJECT CLASSES</span></div>
+        <div><span class="signal-value">6</span><span class="signal-label">MODEL VARIANTS</span></div>
+        <div><span class="signal-value accent-text">81.71<small>%</small></span><span class="signal-label">BEST REPORTED TEST ACCURACY</span></div>
+      </div>
+    </section>
+
+    <section class="content-section section-wrap" id="overview">
+      <div class="section-heading">
+        <p class="eyebrow">01 <span>/</span> THE QUESTION</p>
+        <h2>Can a compact CNN<br>recognize <span class="serif-accent">everyday objects?</span></h2>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-lead"><p>This project studies image classification on CIFAR-10, a benchmark of small color images spanning ten familiar categories. The notebook builds and evaluates six approaches, from a LeNet-5 baseline to a scratch-built CNN with data augmentation and an ImageNet-pretrained MobileNetV2.</p><p>The central comparison: how far can a carefully trained compact convolutional network go, and does augmentation help it generalize?</p></div>
+        <div class="overview-facts">
+          <div class="fact-row"><span>Task</span><strong>10-class image classification</strong></div>
+          <div class="fact-row"><span>Input</span><strong>32 × 32 RGB pixels</strong></div>
+          <div class="fact-row"><span>Best row in notebook comparison</span><strong class="accent-text">Scratch CNN + ImageDataGenerator</strong></div>
+          <div class="fact-row"><span>Frameworks</span><strong>TensorFlow · Keras · scikit-learn</strong></div>
+        </div>
+      </div>
+      <div class="tag-row" aria-label="Libraries used"><span>Python</span><span>TensorFlow</span><span>Keras</span><span>NumPy</span><span>Pandas</span><span>Matplotlib</span><span>scikit-learn</span><span>SciPy</span></div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="dataset">
+      <div class="section-heading heading-split">
+        <div><p class="eyebrow">02 <span>/</span> THE DATA</p><h2>A familiar world,<br><span class="serif-accent">in 32 pixels.</span></h2></div>
+        <p class="heading-aside">CIFAR-10 from <code>tf.keras.datasets</code> — 60,000 color images across ten mutually exclusive classes.</p>
+      </div>
+      <div class="dataset-stats">
+        <article class="stat-card"><span class="stat-index">01</span><strong>50,000</strong><span>training images</span><small>32 × 32 × 3 · uint8</small></article>
+        <article class="stat-card"><span class="stat-index">02</span><strong>10,000</strong><span>test images</span><small>10,000 held-out images</small></article>
+        <article class="stat-card"><span class="stat-index">03</span><strong>10</strong><span>balanced classes</span><small>1,000 test images per class</small></article>
+      </div>
+      <div class="class-panel">
+        <div class="panel-heading"><div><p class="eyebrow">CLASS DISTRIBUTION</p><h3>One dataset. Ten categories.</h3></div><span class="mono-label">5,000 TRAIN / 1,000 TEST EACH</span></div>
+        <div class="class-grid" id="class-grid" aria-label="CIFAR-10 classes and image counts"></div>
+      </div>
+      <div class="dataset-bottom">
+        <div class="split-card"><p class="eyebrow">DATA FLOW</p><div class="split-track"><span class="split-train"></span><span class="split-test"></span></div><div class="split-legend"><span><i class="legend-dot train-dot"></i>50,000 train</span><span><i class="legend-dot test-dot"></i>10,000 test</span></div><p class="small-note">For scratch CNN and transfer-learning runs that used <code>validation_split=0.1</code>, 10% of the training array was held out for validation. The ImageDataGenerator run instead used the test array as validation; see the evaluation caveat below.</p></div>
+        <figure class="figure-card dataset-sample"><img src="assets/notebook-outputs/cell-17-output-00.png" alt="The notebook's ten actual misclassified CIFAR-10 test examples, each annotated with its true and predicted class"><figcaption><span>FROM THE NOTEBOOK</span>Actual held-out test images, with their ground truth and scratch-CNN predictions. The notebook does not include a representative sample gallery for every class.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="method">
+      <div class="section-heading">
+        <p class="eyebrow">03 <span>/</span> THE METHOD</p>
+        <h2>From raw pixels<br>to <span class="serif-accent">learned features.</span></h2>
+      </div>
+      <div class="method-columns">
+        <article class="method-card">
+          <span class="method-number">A</span><h3>Prepare the image</h3>
+          <ul class="clean-list"><li><span>01</span>Keep RGB pixels at 32 × 32 for CIFAR-10 CNNs.</li><li><span>02</span>Convert image arrays to float32 and divide by 255; observed range: 0–1.</li><li><span>03</span>One-hot encode labels to 10 output values.</li><li><span>04</span>Resize to 96 × 96 only for MobileNetV2.</li></ul>
+          <div class="mini-output">LABEL SHAPE <b>(50,000, 10)</b><span>TEST LABELS <b>(10,000, 10)</b></span></div>
+        </article>
+        <article class="method-card">
+          <span class="method-number">B</span><h3>Vary the transformations</h3>
+          <ul class="clean-list"><li><span>01</span>ImageDataGenerator: rotate up to 15°, shift width/height by 10%.</li><li><span>02</span>Horizontal flips and zoom up to 10%; nearest fill.</li><li><span>03</span>Keras layers: flip, rotate, zoom, and translate by 10%.</li><li><span>04</span>Augmentation is used during training, not user-image prediction.</li></ul>
+          <div class="mini-output">RANDOM TRANSFORMS <b>5 TYPES</b><span>PIXEL RANGE <b>0 → 1</b></span></div>
+        </article>
+      </div>
+      <div class="preprocess-gallery" id="preprocess-gallery" aria-label="Notebook preprocessing visualizations"></div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="architecture">
+      <div class="section-heading heading-split">
+        <div><p class="eyebrow">04 <span>/</span> THE ARCHITECTURES</p><h2>Six paths to<br><span class="serif-accent">a prediction.</span></h2></div>
+        <p class="heading-aside">The winning scratch architecture is deliberately modest: 175,018 parameters, with learned filters followed by global pooling and a 10-way softmax.</p>
+      </div>
+      <div class="architecture-spotlight">
+        <div class="architecture-top"><div><span class="eyebrow">SELECTED MODEL · CNN SCRATCH + AUGMENTATION</span><h3>Custom_CNN</h3></div><span class="parameter-pill">175,018 <small>parameters</small></span></div>
+        <div class="layer-flow" aria-label="Custom CNN architecture"><div><small>INPUT</small><strong>32×32×3</strong></div><i>→</i><div><small>CONV × 2</small><strong>32 filters</strong></div><i>→</i><div><small>MAX POOL</small><strong>16×16</strong></div><i>→</i><div><small>CONV × 2</small><strong>64 filters</strong></div><i>→</i><div><small>MAX POOL</small><strong>8×8</strong></div><i>→</i><div><small>CONV</small><strong>128 filters</strong></div><i>→</i><div><small>GLOBAL AVG</small><strong>128 values</strong></div><i>→</i><div><small>DENSE</small><strong>256 → 10</strong></div></div>
+        <p class="small-note">All convolutions use 3 × 3 kernels, ReLU activations, and same padding. The final Dense layer uses softmax. Parameter count and layer sequence are from the notebook's Custom_CNN summary.</p>
+      </div>
+      <div class="model-cards">
+        <article class="model-card"><span class="eyebrow">BASELINE</span><h3>LeNet-5</h3><p>Two tanh convolution stages, average pooling, and dense layers.</p><div><b>62,006</b><span>parameters</span></div></article>
+        <article class="model-card"><span class="eyebrow">TRANSFER LEARNING</span><h3>MobileNetV2</h3><p>ImageNet weights, resized inputs at 96 × 96, global average pooling, and a 128-unit head.</p><div><b>2,423,242</b><span>parameters · 165,258 trainable when frozen</span></div></article>
+        <article class="model-card"><span class="eyebrow">CONCEPT DEMO</span><h3>Residual block</h3><p>Two 3 × 3 convolutions plus a 1 × 1 shortcut projection and addition.</p><div><b>78,016</b><span>parameters · standalone demo</span></div></article>
+      </div>
+      <div class="experiment-figures" id="architecture-gallery" aria-label="Notebook feature maps and architecture visualizations"></div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="training">
+      <div class="section-heading">
+        <p class="eyebrow">05 <span>/</span> THE TRAINING</p>
+        <h2>Give learning room.<br><span class="serif-accent">Stop when it stalls.</span></h2>
+      </div>
+      <div class="training-grid">
+        <div class="training-copy"><p>The custom CNN used Adam with categorical cross-entropy, batch size 64, and up to 100 epochs. Early stopping monitored validation loss (patience 10, restoring best weights); a plateau scheduler halved the learning rate after five stagnant epochs.</p><p>Training stopped at epoch 27 and restored the weights from epoch 17. The notebook reports a 26.65-minute training run. The augmented CNN used the same optimizer and callbacks, with online image transformations.</p><div class="training-facts"><div><span>OPTIMIZER</span><b>Adam · 0.001</b></div><div><span>LOSS</span><b>Categorical cross-entropy</b></div><div><span>BATCH</span><b>64 (scratch CNN)</b></div><div><span>STOPPED</span><b>27 / 100 epochs</b></div></div></div>
+        <div class="training-highlight"><span class="eyebrow">RESTORED CHECKPOINT</span><strong>17<span>th</span></strong><p>Best epoch by validation loss for the scratch CNN run, restored after early stopping.</p><div class="training-timeline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="timeline-best"></i><i></i><i></i><i></i><i class="timeline-best"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="timeline-stop"></i></div><div class="timeline-labels"><span>epoch 1</span><span>best weights · 17</span><span>stopped · 27</span></div></div>
+      </div>
+      <div class="training-figures" id="training-gallery" aria-label="Notebook training and validation curves"></div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="results">
+      <div class="section-heading heading-split">
+        <div><p class="eyebrow">06 <span>/</span> THE EVIDENCE</p><h2>Augmentation led<br>the <span class="serif-accent">comparison.</span></h2></div>
+        <p class="heading-aside">Reported test accuracy for every model in the notebook's comparison table. No metrics are added beyond its recorded results.</p>
+      </div>
+      <div class="results-hero">
+        <div><span class="eyebrow">HIGHEST REPORTED TEST ACCURACY</span><div class="big-score">81.71<span>%</span></div><p>Custom CNN + ImageDataGenerator<br><span>175,018 parameters</span></p></div>
+        <div class="results-hero-aside"><span class="score-arrow" aria-hidden="true">↗</span><p>+2.49 percentage points over the same CNN trained without augmentation (79.22%).</p><small>Difference calculated from the two reported notebook accuracies.</small></div>
+      </div>
+      <div class="chart-panel"><div class="chart-heading"><div><p class="eyebrow">MODEL COMPARISON</p><h3>Accuracy on CIFAR-10 test set</h3></div><span class="mono-label">0–100% SCALE</span></div><div class="chart-scroll"><div id="accuracy-chart" role="img" aria-label="Bar chart comparing the six model test accuracies from the notebook"></div></div><div class="chart-legend"><span><i class="legend-dot best-dot"></i>Highest reported</span><span><i class="legend-dot baseline-dot"></i>Other notebook results</span></div></div>
+      <div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Model</th><th>Approach</th><th>Parameters</th><th>Test accuracy</th></tr></thead><tbody id="comparison-body"></tbody></table></div>
+      <div class="evaluation-grid">
+        <article class="evaluation-card"><div class="panel-heading"><div><p class="eyebrow">SCRATCH CNN · NO AUGMENTATION</p><h3>Per-class report</h3></div><span class="metric-chip">79.22% accuracy</span></div><p class="small-note">These precision, recall, and F1 values are the notebook's classification report for the non-augmented scratch CNN, not the selected augmented model.</p><div class="table-scroll"><table class="report-table"><thead><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support</th></tr></thead><tbody id="report-body"></tbody><tfoot><tr><th>Macro avg</th><td>0.79</td><td>0.79</td><td>0.79</td><td>10,000</td></tr><tr><th>Weighted avg</th><td>0.79</td><td>0.79</td><td>0.79</td><td>10,000</td></tr></tfoot></table></div></article>
+        <article class="evaluation-card"><div class="panel-heading"><div><p class="eyebrow">SCRATCH CNN · NO AUGMENTATION</p><h3>Confusion matrix</h3></div><span class="metric-chip">10,000 test images</span></div><p class="small-note">Actual matrix generated by the notebook. Rows are true labels; columns are predicted labels.</p><div class="figure-card matrix-figure"><img src="assets/notebook-outputs/cell-15-output-01.png" alt="CIFAR-10 confusion matrix for the scratch CNN without augmentation, exactly as rendered in the notebook"><figcaption><span>NOTEBOOK OUTPUT</span>Rows are true labels; columns are predicted labels.</figcaption></div><div class="confusion-list"><span>Most frequent directed confusions</span><b>dog → cat <i>158</i></b><b>cat → dog <i>111</i></b><b>ship → airplane <i>87</i></b></div></article>
+      </div>
+      <div class="evaluation-caveat"><span aria-hidden="true">!</span><p><strong>Evaluation note.</strong> In the notebook, the ImageDataGenerator run uses the 10,000-image test set as validation data and then evaluates on that same set. Treat 81.71% as the notebook-reported result, not an untouched final holdout estimate. The comparison table also reports MobileNetV2 feature extraction as 0.8100, while its earlier standalone evaluation prints 0.7995; the notebook reuses the fine-tuned model object in the later comparison. Both table values are preserved as printed.</p></div>
+      <div class="result-figures" id="results-gallery" aria-label="All notebook evaluation and comparison figures"></div>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="demo">
+      <div class="section-heading heading-split">
+        <div><p class="eyebrow">07 <span>/</span> TRY THE MODEL</p><h2>Bring an image.<br><span class="serif-accent">Ask what it sees.</span></h2></div>
+        <p class="heading-aside">The included API loads the actual saved CNN+augmentation model. It resizes your image to 32 × 32 RGB, scales pixels to [0, 1], and returns its real softmax scores.</p>
+      </div>
+      <div class="demo-shell">
+        <div class="demo-main">
+          <div class="demo-topline"><span><i class="status-dot" id="api-dot"></i><span id="api-status">Checking prediction service…</span></span><span class="mono-label">MODEL · CUSTOM_CNN</span></div>
+          <form id="predict-form">
+            <label class="upload-zone" id="upload-zone" for="image-input">
+              <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+              <span class="upload-icon" aria-hidden="true">↑</span><strong>Drop an image here</strong><span>or <u>browse files</u></span><small>PNG, JPG, WEBP or GIF · up to 8 MB</small>
+            </label>
+            <div class="preview-wrap" id="preview-wrap" hidden><img id="image-preview" alt="Preview of the image selected for classification"><div><strong id="file-name"></strong><button class="text-button" type="button" id="remove-image">Remove image</button></div></div>
+            <button class="button button-primary predict-button" id="predict-button" type="submit" disabled>Run classification <span aria-hidden="true">↗</span></button>
+            <p class="demo-message" id="demo-message" role="status" aria-live="polite">Start the API to make a live prediction. The page never substitutes a mock result.</p>
+          </form>
+        </div>
+        <div class="demo-result" id="demo-result" aria-live="polite">
+          <div class="empty-result"><span class="empty-orbit" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="eyebrow">MODEL RESPONSE</span><h3>Your result<br>will appear here.</h3><p>Upload an image to see the model's predicted class and per-class softmax scores.</p></div>
+          <div id="prediction-output" hidden></div>
+        </div>
+      </div>
+      <p class="demo-disclaimer">CIFAR-10 was trained on small, centered objects. The model accepts other images, but results on unrelated image types may be unreliable. Softmax scores are model outputs, not calibrated probabilities.</p>
+    </section>
+
+    <section class="content-section section-wrap section-ruled" id="conclusion">
+      <div class="section-heading">
+        <p class="eyebrow">08 <span>/</span> THE TAKEAWAY</p>
+        <h2>A small network.<br><span class="serif-accent">A measurable gain.</span></h2>
+      </div>
+      <div class="conclusion-grid">
+        <div class="conclusion-lead"><span class="conclusion-mark" aria-hidden="true">“</span><p>Within this experiment, online augmentation moved the custom CNN from 79.22% to the highest reported score, 81.71%. The model stays compact at 175,018 parameters.</p><span class="conclusion-caption">THE NOTEBOOK'S TOP COMPARISON RESULT</span></div>
+        <div class="conclusion-details"><article><span>01 / FINDING</span><p>ImageDataGenerator augmentation outperformed the same scratch CNN without augmentation by 2.49 percentage points in the reported test comparison.</p></article><article><span>02 / LIMITATION</span><p>The CIFAR-10 images are low resolution, and the test set was used for validation in the winning run. A separate validation set and fresh test evaluation would provide a stronger estimate.</p></article><article><span>03 / NEXT EXPERIMENT</span><p>Reserve validation data before model selection, report per-class metrics for the selected checkpoint, and evaluate robustness on additional data.</p></article></div>
+      </div>
+    </section>
+
+    <section class="content-section section-wrap notebook-figures-section" id="notebook-outputs">
+      <div class="section-heading heading-split"><div><p class="eyebrow">APPENDIX <span>/</span> NOTEBOOK OUTPUTS</p><h2>Every figure.<br><span class="serif-accent">Every recorded result.</span></h2></div><p class="heading-aside">All 12 embedded figures below are extracted directly from the executed notebook. Expand the text archive for the complete printed outputs, layer summaries, comparison table, evaluation report, warnings, and training logs.</p></div>
+      <div class="all-figures" id="all-figures"></div>
+      <div class="output-archive-panel">
+        <div class="panel-heading"><div><p class="eyebrow">SOURCE OUTPUT ARCHIVE</p><h3>Notebook text outputs</h3></div><span class="mono-label">28 CELLS · 58 OUTPUTS</span></div>
+        <p class="small-note">These are the notebook's saved textual outputs, including full training logs. Figures are shown in the gallery above. Expand a cell to inspect its recorded output.</p>
+        <div class="output-archive" id="output-archive" aria-live="polite">Loading saved notebook outputs…</div>
+      </div>
+    </section>
+
+    <section class="closing-band section-wrap"><div><p class="eyebrow">A REPRODUCIBLE STUDY</p><h2>Data in. Evidence out.</h2><p>Built from the notebook's actual CIFAR-10 experiments, figures, model and reported metrics.</p></div><a class="button button-primary" href="#top">Back to the beginning <span aria-hidden="true">↑</span></a></section>
+  </main>
+
+  <footer class="site-footer section-wrap"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span>VISION<span class="brand-light">LAB</span><small>IMAGE CLASSIFICATION / 01</small></span></a><span>© 2026 NEEL PATEL · ALL RIGHTS RESERVED</span><a href="https://github.com/patelneel9080/Image-Classification" target="_blank" rel="noopener noreferrer">SOURCE REPOSITORY ↗</a><a href="#top">BACK TO TOP ↑</a></footer>
+  <dialog class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Close image">×</button><img id="lightbox-image" alt=""><p id="lightbox-caption"></p></dialog>
+</body>
+</html>

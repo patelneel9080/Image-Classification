@@ -1,0 +1,74 @@
+[
+  {
+    "cell": 3,
+    "output": 0,
+    "title": "Pixel values before normalization",
+    "src": "assets/notebook-outputs/cell-03-output-00.png"
+  },
+  {
+    "cell": 3,
+    "output": 1,
+    "title": "Pixel values after normalization",
+    "src": "assets/notebook-outputs/cell-03-output-01.png"
+  },
+  {
+    "cell": 5,
+    "output": 0,
+    "title": "Grayscale input and manual edge convolution",
+    "src": "assets/notebook-outputs/cell-05-output-00.png"
+  },
+  {
+    "cell": 6,
+    "output": 1,
+    "title": "Zero-padded CIFAR-10 image",
+    "src": "assets/notebook-outputs/cell-06-output-01.png"
+  },
+  {
+    "cell": 8,
+    "output": 1,
+    "title": "Sixteen convolution feature maps",
+    "src": "assets/notebook-outputs/cell-08-output-01.png"
+  },
+  {
+    "cell": 9,
+    "output": 1,
+    "title": "Feature maps before and after max pooling",
+    "src": "assets/notebook-outputs/cell-09-output-01.png"
+  },
+  {
+    "cell": 14,
+    "output": 0,
+    "title": "Scratch CNN training and validation curves",
+    "src": "assets/notebook-outputs/cell-14-output-00.png"
+  },
+  {
+    "cell": 15,
+    "output": 1,
+    "title": "Scratch CNN confusion matrix",
+    "src": "assets/notebook-outputs/cell-15-output-01.png"
+  },
+  {
+    "cell": 17,
+    "output": 0,
+    "title": "Ten actual misclassified test images, with true and predicted labels",
+    "src": "assets/notebook-outputs/cell-17-output-00.png"
+  },
+  {
+    "cell": 18,
+    "output": 0,
+    "title": "Original image and nine data-augmentation transforms",
+    "src": "assets/notebook-outputs/cell-18-output-00.png"
+  },
+  {
+    "cell": 20,
+    "output": 0,
+    "title": "Accuracy and loss: scratch CNN versus ImageDataGenerator augmentation",
+    "src": "assets/notebook-outputs/cell-20-output-00.png"
+  },
+  {
+    "cell": 25,
+    "output": 0,
+    "title": "MobileNetV2 feature-extraction and fine-tuning curves",
+    "src": "assets/notebook-outputs/cell-25-output-00.png"
+  }
+]
