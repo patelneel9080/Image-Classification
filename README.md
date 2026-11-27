@@ -120,10 +120,10 @@ If Render does not pick up `.python-version`, set `PYTHON_VERSION` to `3.11.15` 
 After deployment, set the API URL in `site/assets/js/config.js`:
 
 ```js
-window.PROJECT_API_BASE = "https://your-api-service.example.com";
+window.PROJECT_API_BASE = "https://image-classification-2-qchn.onrender.com";
 ```
 
-Redeploy the static site after changing the API URL. Keep the CORS origins limited to the website's real origin. For local development, the site and API share one origin, so no additional CORS configuration is needed.
+The free Render service may sleep after inactivity, so its first request can take 50 seconds or more. Redeploy the static site after changing the API URL. Keep the CORS origins limited to the website's real origin. For local development, the site and API share one origin, so no additional CORS configuration is needed.
 
 ## Project structure
 
