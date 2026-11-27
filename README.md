@@ -110,9 +110,12 @@ The expected Pages URL is `https://patelneel9080.github.io/Image-Classification/
 
 Deploy the `backend/` directory as a Python web service (for example, on Render):
 
+- **Python version:** `.python-version` pins the service to Python 3.11.15, which has a TensorFlow 2.21 wheel. Render's default Python 3.14 currently does not.
 - **Build command:** `pip install -r requirements.txt`
 - **Start command:** `uvicorn app:app --host 0.0.0.0 --port $PORT`
 - **Environment variable:** `PROJECT_CORS_ORIGINS` set to the exact website origin, e.g. `https://patelneel9080.github.io`
+
+If Render does not pick up `.python-version`, set `PYTHON_VERSION` to `3.11.15` in the service's environment variables; that setting takes precedence.
 
 After deployment, set the API URL in `site/assets/js/config.js`:
 
@@ -126,6 +129,7 @@ Redeploy the static site after changing the API URL. Keep the CORS origins limit
 
 ```text
 Image_Classification.ipynb              Original notebook (kept unchanged)
+.python-version                         Render runtime pin (Python 3.11.15)
 README.md
 backend/
   app.py                                 FastAPI API and local site server
