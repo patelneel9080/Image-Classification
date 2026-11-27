@@ -15,6 +15,20 @@ This repository turns the experiments in the original Jupyter Notebook into a re
 
 GitHub Pages hosts the static showcase only. The live prediction API needs a separate Python service; see [Deploy](#deploy).
 
+## Website screenshots
+
+**Project overview**
+
+![CIFAR-10 Vision Lab project overview](site/assets/showcase-overview.png)
+
+**Notebook-backed results**
+
+![Model results and reported notebook metrics](site/assets/showcase-results.png)
+
+**Live image-classification demo**
+
+![Image upload and live prediction interface](site/assets/showcase-demo.png)
+
 ## Quick start on Windows
 
 ### Requirements
