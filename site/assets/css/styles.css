@@ -300,7 +300,7 @@ code { color: var(--mint); font: 400 .88em var(--mono); }
 .upload-zone strong { color: #d6dfdc; font-size: 12px; font-weight: 500; }
 .upload-zone > span:not(.upload-icon) { font-size: 10px; }
 .upload-zone u { color: var(--mint); text-underline-offset: 3px; }
-.upload-zone small { margin-top: 13px; color: #69797d; font: 400 8px var(--mono); }
+.upload-zone small { max-width: 520px; margin-top: 13px; color: #69797d; font: 400 8px/1.5 var(--mono); text-align: center; }
 .preview-wrap { display: flex; min-height: 185px; align-items: center; gap: 17px; border: 1px solid var(--line); padding: 14px; background: #0a1014; }
 .preview-wrap[hidden], .upload-zone[hidden], #prediction-output[hidden] { display: none; }
 .preview-wrap img { width: 125px; height: 125px; border: 1px solid var(--line); object-fit: contain; background: #f1f2f0; }

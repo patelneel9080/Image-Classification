@@ -306,7 +306,7 @@ function clearSelectedFile() {
   document.getElementById("predict-button").disabled = true;
   document.getElementById("prediction-output").hidden = true;
   document.querySelector(".empty-result").hidden = false;
-  document.getElementById("demo-message").textContent = "Choose an image to get started.";
+  document.getElementById("demo-message").textContent = "Choose an image from the 10 CIFAR-10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, or truck.";
 }
 
 async function predict(event) {
